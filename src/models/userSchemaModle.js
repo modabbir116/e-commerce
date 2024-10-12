@@ -1,8 +1,9 @@
-import { type } from "express/lib/response";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import {mongoose, Schema} from "mongoose";
 
 const userSchema = new Schema({
-    dispalyName: {
+    displayName: {
         type: String,
         required: [true, "Name is Required"],
         trim: true,
@@ -20,12 +21,13 @@ const userSchema = new Schema({
         mainLength: [8, "minimum length is 8"],
         select: false
     },
-    phonNumber:{
-        type: String,
-        unique: true,
-    },
     emailVerified:{
         type: Date,     
+    },
+    phoneNumber: {
+        type: String,
+        unique: true
+        
     },
     resetPassword:{
         type: String, 
@@ -33,7 +35,8 @@ const userSchema = new Schema({
     role:{
         type: String,
         enum : ["user", "seller", "editor", "admin"],
-        lowercase: true
+        lowercase: true,
+        default: "user"
     },
     address:[
         {steeet: {
@@ -42,9 +45,37 @@ const userSchema = new Schema({
         {postcode: String}, 
         {distric: String}, 
         {country: String},
-    ]
+    ],
+    refreshToken:{
+        type: String,
+    }
 }, {
     timestamps: true
 })
+    // pasword validation or hashing 
+    userSchema.pre('save', async function(next) {                                                                                                                                        
+        if(this.isModified('password')) {                                                                                                                                                        
+            this.password = await bcrypt.hash(this.password, 10)  
+        }                                                                                                                                                                          
+        next()                                                                                                                                                                     
+    })
 
-export const User = mongoose.model("User", userSchema)
+
+// accesToken create 
+userSchema.methods.generateAccesToken = async function() {
+    return jwt.sign({
+        id:this._id,
+        email: this.email
+    }, ACCES_TOKEN_SECRET, { expiresIn: process.env.ACCES_TOKEN_EXPIRE});
+}
+
+// RefreshToken create 
+userSchema.methods.generateRefreshToken = async function() {
+    return jwt.sign({
+        id:this._id,
+        email: this.email
+    }, REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRE});
+}
+
+
+export  const User = mongoose.model("User", userSchema)
