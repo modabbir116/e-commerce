@@ -1,5 +1,7 @@
-export function verificationTemplet(){
-    return `<div>
-    <h1 style="color:red">Email Verification </h1> 
-    </div>`
+export function verificationTemplet(link){
+    console.log("he",link);
+    
+    return `<!doctypehtml><html lang=en><meta charset=UTF-8><meta content="width=device-width,initial-scale=1"name=viewport><title>Email Verification</title><style>body{font-family:Arial,sans-serif;background-color:#f4f6f8;margin:0;padding:0;color:#333}.container{max-width:600px;margin:50px auto;background-color:#fff;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.1);padding:30px}.header{text-align:center;padding:20px 0;border-bottom:1px solid #eaeaea}.header h1{font-size:24px;color:#2c3e50}.content{text-align:center;padding:40px 20px}.content h2{font-size:22px;color:#34495e;margin-bottom:20px}.content p{font-size:16px;color:#7f8c8d;line-height:1.6}.content a{font-size:16px;color:#000;line-height:1.6}.pPart{text-align:left}.button-container{margin-top:30px}.verify-btn{display:inline-block;background-color:#3498db;color:#fff;padding:12px 30px;border-radius:30px;text-decoration:none;font-size:18px;transition:background-color .3s ease}.verify-btn:hover{background-color:#2980b9}.footer{text-align:center;padding:20px 0;font-size:14px;color:#95a5a6;border-top:1px solid #eaeaea}.footer p{margin:0}.footer a{color:#3498db;text-decoration:none}.footer a:hover{text-decoration:underline}</style><div class=container><div class=header><h1>welcome to NovaMart E-Commerce Plat From</h1></div><div class=content><p>Thank you for signing up for NovaMart E-Commerce Please click the button below to verify your email and complete the registration process.<div class=button-container><a href=${process.env.API_URL}user/${link} class=verify-btn>Confirm Email</a></div><p>If you didn’t sign up, you can safely ignore this email.<div class=pPart><p>Thank you for choosing NovaMart E-Commerce<p>Best Regards,<p>The NovaMart E-Commerce Team</div></div><div class=footer><p>Need help? <a href=mailto:support@novamarte-commerce.com>Contact us</a><p>© 2024 NovaMart E-Commerce. All rights reserved.</div></div>
+
+    `
 }

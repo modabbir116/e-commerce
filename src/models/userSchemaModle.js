@@ -66,7 +66,7 @@ userSchema.methods.generateAccesToken = async function() {
     return jwt.sign({
         id:this._id,
         email: this.email
-    }, ACCES_TOKEN_SECRET, { expiresIn: process.env.ACCES_TOKEN_EXPIRE});
+    }, process.env.ACCES_TOKEN_SECRET, { expiresIn: process.env.ACCES_TOKEN_EXPIRE});
 }
 
 // RefreshToken create 
@@ -74,8 +74,20 @@ userSchema.methods.generateRefreshToken = async function() {
     return jwt.sign({
         id:this._id,
         email: this.email
-    }, REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRE});
+    }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRE});
 }
+
+// verify a token symmetric
+userSchema.methods.AccesTokenVerify =  function(token) {
+    return jwt.verify(token, process.env.ACCES_TOKEN_SECRET, function (err, decoded){
+        if (err) {
+            return null
+        }
+
+        return decoded
+    });
+}
+
 
 
 export  const User = mongoose.model("User", userSchema)
