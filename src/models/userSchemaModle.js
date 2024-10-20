@@ -52,13 +52,20 @@ const userSchema = new Schema({
 }, {
     timestamps: true
 })
-    // pasword validation or hashing 
-    userSchema.pre('save', async function(next) {                                                                                                                                        
-        if(this.isModified('password')) {                                                                                                                                                        
-            this.password = await bcrypt.hash(this.password, 10)  
-        }                                                                                                                                                                          
-        next()                                                                                                                                                                     
-    })
+
+
+// pasword validation or hashing 
+userSchema.pre('save', async function(next) {                                                                                                                                        
+    if(this.isModified('password')) {                                                                                                                                                        
+        this.password = await bcrypt.hash(this.password, 10)  
+    }                                                                                                                                                                          
+    next()                                                                                                                                                                     
+})
+
+// passwoard compare 
+userSchema.methods.checkPassword = async function(passwoard){
+    
+}
 
 
 // accesToken create 

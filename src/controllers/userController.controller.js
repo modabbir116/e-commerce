@@ -34,11 +34,17 @@ const emaiVarified = async(req, res) =>{
         const {link} = req.params
         const user = new User()
         const result = await user.AccesTokenVerify(link)
-        console.log(result);
         
         if (result) {
-            const UserFound = await User.findOne({email: result.email})
+            const {email} = result
+            const UserFound = await User.findOne({email})
+            if (UserFound.emaiVarified) {
+                return res.send("all ready verified")
+            }
             if (UserFound) {
+                UserFound.emailVerified = Date.now(); // Set emailVerified to the current timestamp
+                console.log("Email verified:", UserFound);
+                await UserFound.save();
                 return res.send("verified")
                 
             }else{
@@ -56,4 +62,24 @@ const emaiVarified = async(req, res) =>{
     }
 }
 
+
+// login part start 
+const login = async (res, req) =>{
+    try {
+        const {email, password} = req.body
+        if (req.body.hasOwnProperty("email") && req.body.hasOwnProperty("password")) {
+            if ([email, password].some((field) => field === "")) {
+                return res.json("all fields is required")
+            }  
+        }else{
+            return res.json("invalid")
+        }
+       const userFound = await User.findOne({email})
+       if (!userFound) {
+            return res.json("email or password worong")
+       }
+    } catch (error) {
+        console.log("login error", error);
+    }
+}
 export {creatUser, emaiVarified}
