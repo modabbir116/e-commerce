@@ -4,6 +4,20 @@ import { verificationTemplet } from "../emailTemplet/verificationTemplet.js";
 
 
 
+// generate token 
+const generateTokens = async(id) =>{
+    try {
+        const user = await User.findById({_id: id})
+        const accessToken = await user.generateAccesToken()
+        const refreshToken = await user.generateRefreshToken()
+        user.refreshToken = refreshToken
+        await user.save()
+        return {accessToken, refreshToken}
+    } catch (error) {
+        console.log("token arror", error);
+    }
+}
+
 const creatUser = async(req, res) =>{
    try {
      const {displayName, email, password, phoneNumber } = req.body
@@ -55,7 +69,6 @@ const emaiVarified = async(req, res) =>{
         
             return res.send("invalide url")
         }
-        
     } catch (error) {
         console.log("verified error", error);
         
@@ -64,22 +77,64 @@ const emaiVarified = async(req, res) =>{
 
 
 // login part start 
-const login = async (res, req) =>{
+// const login = async (res, req) =>{
+//     try {
+//         const {email, password} = req.body
+//         if (req.body.hasOwnProperty("email") && req.body.hasOwnProperty("password")) {
+//             if ([email, password].some((field) => field === "")) {
+//                 return res.send("all fields is required")
+//             }  
+//         }else{
+//             return res.send("invalid")
+//         }
+//         // user email check 
+//        const userFound = await User.findOne({email})
+//        if (!userFound) {
+//             return res.send("email or password worong 2")
+//        }
+//        // user password check 
+//        const isPasswordCorret = await userFound.checkPassword(password)
+//        if (!isPasswordCorret) {
+//             return res.send("email or password worong 2")
+//        }
+
+//         // tokec accec
+//         const {accesToken, refreshToken} = await generateTokens(userFound._id)
+//         return res.json(accesToken, refreshToken)
+//     } catch (error) {
+//         console.log("login error", error);
+//     }
+// }
+
+const login = async (req, res) => {
     try {
-        const {email, password} = req.body
-        if (req.body.hasOwnProperty("email") && req.body.hasOwnProperty("password")) {
-            if ([email, password].some((field) => field === "")) {
-                return res.json("all fields is required")
-            }  
-        }else{
-            return res.json("invalid")
+        const { email, password } = req.body;
+
+        // Check if both email and password are provided
+        if (!email || !password) {
+            return res.send("All fields are required");
         }
-       const userFound = await User.findOne({email})
-       if (!userFound) {
-            return res.json("email or password worong")
-       }
+
+        // Find user by email
+        const userFound = await User.findOne({ email });
+        if (!userFound) {
+            return res.send("Email or password is incorrect 1");
+        }
+
+        // Check if the password is correct
+        const isPasswordCorrect = await userFound.checkPassword(password);
+        if (!isPasswordCorrect) {
+            return res.send("Email or password is incorrect 2");
+        }
+
+        // Generate access and refresh tokens
+        const {accessToken, refreshToken} = await generateTokens(userFound._id)
+        return res.json({accessToken, refreshToken})
+        
     } catch (error) {
-        console.log("login error", error);
+        console.log("Login error:", error);
+        res.status(500).send("Internal server error");
     }
-}
-export {creatUser, emaiVarified}
+};
+
+export {creatUser, emaiVarified, login}

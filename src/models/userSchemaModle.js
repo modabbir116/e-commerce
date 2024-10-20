@@ -19,7 +19,6 @@ const userSchema = new Schema({
         type: String,
         required: [true, "Password is Required"],
         mainLength: [8, "minimum length is 8"],
-        select: false
     },
     emailVerified:{
         type: Date,     
@@ -63,8 +62,13 @@ userSchema.pre('save', async function(next) {
 })
 
 // passwoard compare 
-userSchema.methods.checkPassword = async function(passwoard){
+userSchema.methods.checkPassword = async function(mypasswoard){
+    console.log(mypasswoard);
+    console.log(this.password);
+    return await bcrypt.compare(mypasswoard, this.password,);
     
+//    return await bcrypt.compare(mypasswoard, this.passwoard)
+
 }
 
 
