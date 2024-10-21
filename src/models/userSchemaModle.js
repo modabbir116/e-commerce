@@ -31,6 +31,9 @@ const userSchema = new Schema({
     resetPassword:{
         type: String, 
     },
+    profilePic: {
+        type: String
+    },
     role:{
         type: String,
         enum : ["user", "seller", "editor", "admin"],

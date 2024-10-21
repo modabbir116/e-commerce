@@ -137,4 +137,11 @@ const login = async (req, res) => {
     }
 };
 
-export {creatUser, emaiVarified, login}
+
+// userUpdate Picture upload
+const userProfile = async (req, res) => {
+    console.log("file recieve", req.file);
+    
+}
+
+export {creatUser, emaiVarified, login, userProfile}
