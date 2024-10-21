@@ -144,7 +144,7 @@ const userProfile = async (req, res) => {
     // const {displayName} = req.body
     if (req.file) {
         const {path} = req.file
-        const imageResult = await cloudinaryImageUpload(path, "Masum", "ProfilePic")
+        // const imageResult = await cloudinaryImageUpload(path, "Masum", "ProfilePic")
         // console.log("image", imageResult);
         // return.optimizeUrl
         // result.uploadResult.public_id
