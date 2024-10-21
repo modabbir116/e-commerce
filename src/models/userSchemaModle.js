@@ -79,7 +79,8 @@ userSchema.methods.checkPassword = async function(mypasswoard){
 userSchema.methods.generateAccesToken = async function() {
     return jwt.sign({
         id:this._id,
-        email: this.email
+        email: this.email,
+        displayName: this.displayName
     }, process.env.ACCES_TOKEN_SECRET, { expiresIn: process.env.ACCES_TOKEN_EXPIRE});
 }
 
@@ -87,7 +88,8 @@ userSchema.methods.generateAccesToken = async function() {
 userSchema.methods.generateRefreshToken = async function() {
     return jwt.sign({
         id:this._id,
-        email: this.email
+        email: this.email,
+        displayName: this.displayName
     }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRE});
 }
 

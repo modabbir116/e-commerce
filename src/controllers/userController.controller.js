@@ -1,6 +1,7 @@
 import { User } from "../models/userSchemaModle.js";
 import { mail } from "../utils/sendMailer.js";
 import { verificationTemplet } from "../emailTemplet/verificationTemplet.js";
+import { cloudinaryImageUpload } from "../services/cloudinary.js";
 
 
 
@@ -140,7 +141,16 @@ const login = async (req, res) => {
 
 // userUpdate Picture upload
 const userProfile = async (req, res) => {
-    console.log("file recieve", req.file);
+    // const {displayName} = req.body
+    if (req.file) {
+        const {path} = req.file
+        const imageResult = await cloudinaryImageUpload(path, "Masum", "ProfilePic")
+        // console.log("image", imageResult);
+        // return.optimizeUrl
+        // result.uploadResult.public_id
+        res.json("okkk")
+    }
+    // console.log("file recieve", req.file);
     
 }
 
