@@ -3,6 +3,7 @@ import { mail } from "../utils/sendMailer.js";
 import { verificationTemplet } from "../emailTemplet/verificationTemplet.js";
 import { cloudinaryImageUpload } from "../services/cloudinary.js";
 import apiResponse from "quick-response";
+import ApiResponse from "../utils/apiResponse.js";
 
 
 
@@ -19,7 +20,7 @@ const generateTokens = async(id) =>{
         console.log("token arror", error);
     }
 }
-
+// user create part 
 const creatUser = async(req, res) =>{
    try {
      const {displayName, email, password, phoneNumber } = req.body
@@ -131,7 +132,7 @@ const login = async (req, res) => {
 
         // Generate access and refresh tokens
         const {accessToken, refreshToken} = await generateTokens(userFound._id)
-        return res.json({accessToken, refreshToken})
+        return res.json(new ApiResponse().apiLoginRespse({accessToken, refreshToken}))
         
     } catch (error) {
         console.log("Login error:", error);
@@ -158,7 +159,6 @@ const userProfile = async (req, res) => {
             
        }
     }
-    // console.log("file recieve", req.file);
     
 }
 
