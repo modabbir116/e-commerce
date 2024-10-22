@@ -2,6 +2,7 @@ import { User } from "../models/userSchemaModle.js";
 import { mail } from "../utils/sendMailer.js";
 import { verificationTemplet } from "../emailTemplet/verificationTemplet.js";
 import { cloudinaryImageUpload } from "../services/cloudinary.js";
+import apiResponse from "quick-response";
 
 
 
@@ -141,14 +142,21 @@ const login = async (req, res) => {
 
 // userUpdate Picture upload
 const userProfile = async (req, res) => {
-    // const {displayName} = req.body
     if (req.file) {
+       try {
         const {path} = req.file
-        // const imageResult = await cloudinaryImageUpload(path, "Masum", "ProfilePic")
-        // console.log("image", imageResult);
-        // return.optimizeUrl
-        // result.uploadResult.public_id
-        res.json("okkk")
+        const user = await User.findById(req.user._id)
+        if (user) {
+            const imageResult = await cloudinaryImageUpload(path, user.displayName, "ProfilePic")
+            user.profilePic = imageResult.optimizeUrl
+            user.public_Id = imageResult.uploadResult.public_id
+            await user.save()
+            res.json(apiResponse(200, "Profile picture upload Success", {user}))
+        }
+       } catch (error) {
+            console.log("user profile update", error);
+            
+       }
     }
     // console.log("file recieve", req.file);
     

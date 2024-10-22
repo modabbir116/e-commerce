@@ -34,6 +34,9 @@ const userSchema = new Schema({
     profilePic: {
         type: String
     },
+    public_Id:{
+        type: String
+    },
     role:{
         type: String,
         enum : ["user", "seller", "editor", "admin"],
