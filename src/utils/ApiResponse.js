@@ -8,5 +8,8 @@ class ApiResponse {
     apiLoginRespse(data){
         return new ApiResponse(201, "Login successfully", data)
     }
+    apiLogOutRespse(data){
+        return new ApiResponse(201, "Logout successfully", data)
+    }
 }
 export default ApiResponse

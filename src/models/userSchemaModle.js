@@ -21,7 +21,7 @@ const userSchema = new Schema({
         mainLength: [8, "minimum length is 8"],
     },
     emailVerified:{
-        type: Date,     
+        type: Date,   
     },
     phoneNumber: {
         type: String,
@@ -83,7 +83,8 @@ userSchema.methods.generateAccesToken = async function() {
     return jwt.sign({
         id:this._id,
         email: this.email,
-        displayName: this.displayName
+        displayName: this.displayName,
+        role: this.role
     }, process.env.ACCES_TOKEN_SECRET, { expiresIn: process.env.ACCES_TOKEN_EXPIRE});
 }
 
@@ -92,7 +93,8 @@ userSchema.methods.generateRefreshToken = async function() {
     return jwt.sign({
         id:this._id,
         email: this.email,
-        displayName: this.displayName
+        displayName: this.displayName,
+        role: this.role
     }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRE});
 }
 

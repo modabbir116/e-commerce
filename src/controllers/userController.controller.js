@@ -108,7 +108,7 @@ const emaiVarified = async(req, res) =>{
 //         console.log("login error", error);
 //     }
 // }
-
+// login part start 
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -118,21 +118,25 @@ const login = async (req, res) => {
             return res.send("All fields are required");
         }
 
-        // Find user by email
+        // // Find user by email
         const userFound = await User.findOne({ email });
         if (!userFound) {
             return res.send("Email or password is incorrect 1");
         }
 
-        // Check if the password is correct
+        // // Check if the password is correct
         const isPasswordCorrect = await userFound.checkPassword(password);
         if (!isPasswordCorrect) {
             return res.send("Email or password is incorrect 2");
         }
-
+        console.log("user",userFound);
+        if (userFound.emailVerified) {
+            const {accessToken, refreshToken} = await generateTokens(userFound._id)
+            return res.json(new ApiResponse().apiLoginRespse({accessToken, refreshToken}))
+           
+        }
         // Generate access and refresh tokens
-        const {accessToken, refreshToken} = await generateTokens(userFound._id)
-        return res.json(new ApiResponse().apiLoginRespse({accessToken, refreshToken}))
+        return res.json("your email is not verified,");
         
     } catch (error) {
         console.log("Login error:", error);
@@ -162,4 +166,17 @@ const userProfile = async (req, res) => {
     
 }
 
-export {creatUser, emaiVarified, login, userProfile}
+// logout part start 
+const logOut = async (req, res) =>{
+    try {
+        const user = await User.findById(req.user.id)
+        user.refreshToken = null
+        await user.save()
+        return res.json(new ApiResponse().apiLogOutRespse(user))
+    } catch (error) {
+        console.log("loguot error", error);
+        
+    }
+}
+
+export {creatUser, emaiVarified, login, userProfile, logOut}
