@@ -1,4 +1,4 @@
-import { User } from "../models/userSchemaModle.js";
+import { User } from "../modelsSchema/userSchemaModle.js";
 import { mail } from "../utils/sendMailer.js";
 import { verificationTemplet } from "../emailTemplet/verificationTemplet.js";
 import { cloudinaryImageUpload } from "../services/cloudinary.js";
@@ -50,14 +50,15 @@ const emaiVarified = async(req, res) =>{
     try {
         const {link} = req.params
         const user = new User()
+        console.log(user); 
         const result = await user.AccesTokenVerify(link)
-        
         if (result) {
             const {email} = result
             const UserFound = await User.findOne({email})
             if (UserFound.emaiVarified) {
                 return res.send("all ready verified")
             }
+           
             if (UserFound) {
                 UserFound.emailVerified = Date.now(); // Set emailVerified to the current timestamp
                 console.log("Email verified:", UserFound);
@@ -65,12 +66,12 @@ const emaiVarified = async(req, res) =>{
                 return res.send("verified")
                 
             }else{
-                return res.send("invalide")
+                return res.send("invalide 22")
                 
             }
         } else {
         
-            return res.send("invalide url")
+            return res.send("invalide url 2222")
         }
     } catch (error) {
         console.log("verified error", error);
@@ -136,7 +137,7 @@ const login = async (req, res) => {
            
         }
         // Generate access and refresh tokens
-        return res.json("your email is not verified,");
+        return res.json("Your email is not verified, Please check your email");
         
     } catch (error) {
         console.log("Login error:", error);

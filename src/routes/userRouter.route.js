@@ -4,16 +4,18 @@ import { validation } from "../middlewares/validationMiddleware.js";
 import {upload} from "../middlewares/multterMiddlesare.js"
 import { auth } from "../middlewares/auth.middlewar.js";
 const router = express.Router()
+// all user router
+router.route("/users").post(creatUser)
 // user sinUp router
-router.route("/user/creat").post(validation, creatUser)
+router.route("/users/creat").post(validation, creatUser)
 // email verification link router
-router.route("/user/:link").get(emaiVarified)
+router.route("/users/:link").get(emaiVarified)
 // logout router 
-router.route("/user/logout").post(logOut)
+router.route("/users/logout").post(auth, logOut)
 // user picture upload router
-router.route("/user/update").post(auth, upload.single('profilePic'), userProfile)
+router.route("/users/update").post(auth, upload.single('profilePic'), userProfile)
 // user login router
-router.route("/user/login").post(login)
+router.route("/users/login").post(login)
 
 
 
