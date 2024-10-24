@@ -11,10 +11,12 @@ const categorySchema = new Schema({
         unique: true,        // Unique constraint
         required: true       // Correct spelling for required
     },
-    subCategory: {
-        type: mongoose.Schema.Types.ObjectId, // Correct reference to ObjectId
-        ref: "subcategory"   // Reference to the 'subcategory' model
-    }
+    subCategory: [
+        {
+            type: mongoose.Schema.Types.ObjectId, // Correct reference to ObjectId
+            ref: "subcategory"   // Reference to the 'subcategory' model
+        }
+    ]
 }, { timestamps: true });    // Add timestamps option
 
 export const Category = mongoose.model("Category", categorySchema);
