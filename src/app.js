@@ -13,6 +13,10 @@ app.use(cors({
 
 // all routers 
 import userRouter from "./routes/userRouter.route.js"
+import categoryRouteer from "./routes/categoryRouter.route.js"
+import subCategoryRouteer from "./routes/subCategoryRouter.route.js"
 app.use("/api/v1/",userRouter)
+app.use("/api/v1/",categoryRouteer)
+app.use("/api/v1/",subCategoryRouteer)
 
 export default app

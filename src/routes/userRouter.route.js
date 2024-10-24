@@ -15,10 +15,6 @@ router.route("/users/:link").get(emaiVarified)
 router.route("/users/logout").post(auth, logOut)
 // user picture upload router
 router.route("/users/update").post(auth, upload.single('profilePic'), userProfile)
-// user admin create router
-router.route("/categories/create").post(auth, adminAuth, (req, res)=>{
-    res.send("creat")
-})
 // user login router
 router.route("/users/login").post(login)
 

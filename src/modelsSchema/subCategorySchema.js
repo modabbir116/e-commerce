@@ -1,20 +1,20 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const subCatagorySchema = new Schema({
+const subCategorySchema = new Schema({
     name: {
-        typeof: String,
-        unique: true,
-        require: true
+        type: String,    // Corrected `typeof` to `type`
+        unique: true,    // Unique constraint
+        required: true   // Correct spelling for `required`
     },
     slug: {
-        typeof: String,
-        unique: true,
-        require: true
+        type: String,    // Corrected `typeof` to `type`
+        unique: true,    // Unique constraint
+        required: true   // Correct spelling for `required`
     },
     category: {
-        typeof: mongoose.Types.ObjectId,
-        ref: "Category"
+        type: mongoose.Schema.Types.ObjectId, // Correct reference to ObjectId
+        ref: "Category"   // Reference to the 'Category' model
     }
-}, {timestamps:true})
+}, { timestamps: true });  // Add timestamps option
 
-export const subCategory = mongoose.model("subCategory", subCatagorySchema)
+export const subCategory = mongoose.model("subCategory", subCategorySchema);
