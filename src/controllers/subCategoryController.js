@@ -16,6 +16,7 @@ const createSubCategory = async (req, res) =>{
         }
         const subCategory1 = await subCategory.create({ name, slug: subSlug, category })
         await Category.updateOne({ _id:category}, { $push: { subCategory: subCategory1._id }})
+        
         return res.json(new ApiResponse(201, "subCategory created", {subCategory1}))  
     } catch (error) {
         console.log("subcategory error", error);

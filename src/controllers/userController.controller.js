@@ -3,7 +3,7 @@ import { mail } from "../utils/sendMailer.js";
 import { verificationTemplet } from "../emailTemplet/verificationTemplet.js";
 import { cloudinaryImageUpload } from "../services/cloudinary.js";
 import apiResponse from "quick-response";
-import ApiResponse from "../utils/apiResponse.js";
+import ApiResponse from "../utils/ApiResponse.js";
 
 
 

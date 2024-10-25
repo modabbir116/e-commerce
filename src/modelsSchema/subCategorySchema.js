@@ -2,19 +2,19 @@ import mongoose, { Schema } from "mongoose";
 
 const subCategorySchema = new Schema({
     name: {
-        type: String,    // Corrected `typeof` to `type`
-        unique: true,    // Unique constraint
-        required: true   // Correct spelling for `required`
+        type: String,    
+        unique: true,    
+        required: true   
     },
     slug: {
-        type: String,    // Corrected `typeof` to `type`
-        unique: true,    // Unique constraint
-        required: true   // Correct spelling for `required`
+        type: String,    
+        unique: true,    
+        required: true   
     },
     category: {
-        type: mongoose.Schema.Types.ObjectId, // Correct reference to ObjectId
-        ref: "Category"   // Reference to the 'Category' model
+        type: mongoose.Types.ObjectId, 
+        ref: "Category"   
     }
-}, { timestamps: true });  // Add timestamps option
+}, { timestamps: true });
 
 export const subCategory = mongoose.model("subCategory", subCategorySchema);
